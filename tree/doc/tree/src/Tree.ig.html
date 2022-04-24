@@ -1,0 +1,190 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: tree/src/Tree.ig</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>tree/src/Tree.ig</H2></A><HR>
+<inInterface>
+<PRE></PRE><P>
+Copyright (C) 2018, John Perry.
+Last modified on Sun Nov  4 2018 by John Perry.
+     modified on Wed Oct 31 2018 by John Perry.
+
+
+<P><PRE>GENERIC INTERFACE <genericInterface><A HREF="Tree.mg.html">Tree</A></genericInterface>(Elem);
+</PRE><P>
+  Implementation of a generic red/black tree
+  that stores elements of type <CODE>Elem.T</CODE>, where <CODE>Elem</CODE> contains
+<P>
+<PRE>
+      CONST Brand = &lt;text-constant&gt;;
+      PROCEDURE Compare(e1, e2: Elem.T): [-1..1];
+</PRE>
+  <CODE>Brand</CODE> must be a text constant. It will be used to construct a brand for
+  any generic types instantiated with the <CODE>Tree</CODE> interface. For a
+  non-generic interface, we recommend choosing the name of the interface.
+<P>
+  <CODE>Compare</CODE> must be a total order. It may be declared with any parameter mode,
+  but must have no visible side-effects.
+<P>
+  The tree inserts and preserves elements in-order from smallest to largest,
+  where the ordering is determined by a <CODE>Compare</CODE> function
+  that should return -1 when e1 &lt; e2, 1 when e1 &gt; e2, and 0 otherwise.
+  <P>
+
+
+<P><PRE>CONST Brand = &quot;(Tree &quot; &amp; Elem.Brand &amp; &quot;)&quot;;
+
+TYPE
+
+  <A HREF="Tree.mg.html#T">T</A> &lt;: REFANY;
+</PRE><P>
+  A <CODE>Tree.T</CODE> actually represents a node of a tree.
+  This may change for insertion or deletion,
+  because the (sub)tree's root may change.
+  Any node has three pieces of information:
+  the value (type Elem.T),
+  the size (number of nodes in the (sub)tree),
+  and the height (maximum number of nodes until a leaf, inclusive).
+
+
+<P> Creation procedures. 
+
+<P><PRE>PROCEDURE <A HREF="Tree.mg.html#Tree">Tree</A>(READONLY root: Elem.T): T;
+</PRE><BLOCKQUOTE><EM> Creates a new tree, with root as its root element. </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Copy">Copy</A>(READONLY src: T; VAR dst: T);
+</PRE><BLOCKQUOTE><EM> Copies <CODE>src</CODE> onto <CODE>dst</CODE>. This recursively copies <CODE>src</CODE>'s subtree, as well. </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#FromArray">FromArray</A>(READONLY e: ARRAY OF Elem.T): T;
+</PRE><BLOCKQUOTE><EM><P>
+Creates a new tree, whose entries come from <CODE>e</CODE>.
+The elements will be sorted into the correct order.
+</EM></BLOCKQUOTE><PRE>
+</PRE> Properties: the tree is unchanged by these procedures. 
+
+<P><PRE>PROCEDURE <A HREF="Tree.mg.html#Member">Member</A>(READONLY t: T; READONLY e: Elem.T): BOOLEAN;
+</PRE><BLOCKQUOTE><EM> Returns <CODE>TRUE</CODE> if and only if <CODE>e</CODE> is an element of <CODE>t</CODE>. </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Find">Find</A>(READONLY t: T; READONLY e: Elem.T): T;
+</PRE><BLOCKQUOTE><EM><P>
+Returns a node of <CODE>t</CODE> that contains <CODE>e</CODE>, if one exists.
+Otherwise, returns <CODE>NIL</CODE>.
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#First">First</A>(READONLY t: T): T;
+</PRE><BLOCKQUOTE><EM> Returns the node in <CODE>t</CODE> that contains its smallest value. </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Last">Last</A>(READONLY t: T): T;
+</PRE><BLOCKQUOTE><EM> Returns the node in <CODE>t</CODE> that contains its largest value. </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Prev">Prev</A>(READONLY t: T): T;
+</PRE><BLOCKQUOTE><EM><P>
+Returns the tree element that precedes <CODE>t</CODE>.
+This is different from <CODE>Left</CODE> in that it returns the next smallest element;
+it follows <CODE>Left</CODE>'s right children until it would fall off the tree.
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Succ">Succ</A>(READONLY t: T): T;
+</PRE><BLOCKQUOTE><EM><P>
+Returns the tree element that succeeds <CODE>t</CODE>.
+This is different from <CODE>Right</CODE> in that it returns the next larger element;
+it follows <CODE>Right</CODE>'s left children until it would fall off the tree.
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Left">Left</A>(READONLY t: T): T;
+</PRE><BLOCKQUOTE><EM><P>
+  Returns <CODE>t</CODE>'s left child.
+  This is different from <CODE>Prev</CODE> in that the result of this function
+  might not be the next smaller element in the tree.
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Right">Right</A>(READONLY t: T): T;
+</PRE><BLOCKQUOTE><EM><P>
+  Returns <CODE>t</CODE>'s right child.
+  This is different from <CODE>Succ</CODE> in that the result of this function
+  might not be the next larger element in the tree.
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Parent">Parent</A>(READONLY t: T): T;
+</PRE><BLOCKQUOTE><EM><P>
+  Returns <CODE>t</CODE>'s parent. If <CODE>t</CODE> is <CODE>NIL</CODE> then this returns <CODE>NIL</CODE>.
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#IsBlack">IsBlack</A>(READONLY t: T): BOOLEAN;
+</PRE><BLOCKQUOTE><EM><P>
+Returns <CODE>TRUE</CODE> if and only if this tree node is black.
+Works also for leaves (<CODE>NIL</CODE>).
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#IsRed">IsRed</A>(READONLY t: T): BOOLEAN;
+</PRE><BLOCKQUOTE><EM><P>
+Returns <CODE>TRUE</CODE> if and only if this tree node is red.
+Works also for leaves (<CODE>NIL</CODE>).
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Value">Value</A>(READONLY t: T): Elem.T;
+</PRE><BLOCKQUOTE><EM> Returns the value stored at <CODE>t</CODE>. </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Size">Size</A>(READONLY t: T): CARDINAL;
+</PRE><BLOCKQUOTE><EM><P>
+Returns the number of nodes in this (sub)tree, including <CODE>t</CODE>.
+Each node in the tree stores the size of its subtree,
+so this is an O(1) operation.
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Height">Height</A>(READONLY t: T): CARDINAL;
+</PRE><BLOCKQUOTE><EM><P>
+Returns the height of this (sub)tree, including <CODE>t</CODE>.
+Nodes in the tree do not store the height of their subtrees,
+so this is an O(n) operation, where n is the number of elements in the tree.
+</EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#Root">Root</A>(n: T): T;
+</PRE><BLOCKQUOTE><EM> Find the root node of the tree that contains <CODE>n</CODE> as a node. </EM></BLOCKQUOTE><PRE>
+</PRE> Operations: the tree is changed by these procedures. 
+
+<P><PRE>PROCEDURE <A HREF="Tree.mg.html#Insert">Insert</A>(VAR t: T; READONLY e: Elem.T): BOOLEAN;
+</PRE><BLOCKQUOTE><EM> Insert <CODE>e</CODE> into <CODE>t</CODE>. </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#ReplaceNode">ReplaceNode</A>(VAR n, c: T);
+</PRE><BLOCKQUOTE><EM> Replace <CODE>n</CODE> by <CODE>c</CODE> in the tree. </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Tree.mg.html#RemoveNode">RemoveNode</A>(VAR n: T): T;
+</PRE><BLOCKQUOTE><EM><P>
+Removes the node <CODE>n</CODE> from its set, and returns the new root.
+Automatically adjusts the root in case <CODE>n</CODE> is the root.
+If you don't know the node you want to remove,
+but you do know the element it contains, <CODE>Find</CODE> it first.
+</EM></BLOCKQUOTE><PRE>
+
+END Tree.</PRE>
+</inInterface>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

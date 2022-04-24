@@ -1,0 +1,6 @@
+import("libm3")
+
+implementation("Eratosthenes")
+
+build_standalone()
+program("Eratosthenes")

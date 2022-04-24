@@ -1,0 +1,256 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: rational/src/Frac.m3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>rational/src/Frac.m3</H2></A><HR>
+<inModule>
+<PRE>MODULE <module><implements><A HREF="Frac.i3.html">Frac</A></implements></module>;
+
+IMPORT IO;
+
+TYPE
+
+  REVEAL <A NAME="T">T</A> = Public BRANDED OBJECT
+    num: INTEGER := 0;
+    den: INTEGER := 1;
+  OVERRIDES
+    init := Init;
+    fromInt := FromInt;
+    abs := Abs;
+    opposite := Opposite;
+    plus := Plus;
+    minus := Minus;
+    times := Times;
+    dividedBy := DividedBy;
+    integerDivision := IntegerDivision;
+    equals := Equals;
+    notEqualTo := NotEqualTo;
+    lessThan := LessThan;
+    lessEqual := LessEqual;
+    greaterEqual := GreaterEqual;
+    greater := Greater;
+    isInt := IsInt;
+    inc := Inc;
+    dec := Dec;
+  END;
+
+PROCEDURE <A NAME="Gcd"><procedure>Gcd</procedure></A>(a, b: CARDINAL): CARDINAL =
+VAR
+  m := MAX(a, b);
+  n := MIN(a, b);
+  r: CARDINAL;
+BEGIN
+  WHILE n # 0 DO
+    r := m MOD n;
+    m := n;
+    n := r;
+  END;
+  RETURN m;
+END Gcd;
+
+PROCEDURE <A NAME="Simplify"><procedure>Simplify</procedure></A>(VAR a: T) =
+VAR
+  d := Gcd(ABS(a.num), ABS(a.den));
+BEGIN
+  a.num := a.num DIV d;
+  a.den := a.den DIV d;
+END Simplify;
+
+PROCEDURE <A NAME="Init"><procedure>Init</procedure></A>(self: T; a, b: INTEGER): T RAISES { ZeroDenominator } =
+BEGIN
+  IF (b &gt; 0) THEN
+    self.num := a;
+    self.den := b;
+  ELSIF (b &lt; 0) THEN
+    self.num := -a;
+    self.den := -b;
+  ELSE
+    RAISE ZeroDenominator;
+  END;
+  Simplify(self);
+  RETURN self;
+END Init;
+
+PROCEDURE <A NAME="FromInt"><procedure>FromInt</procedure></A>(self: T; a: INTEGER): T =
+BEGIN
+  self.num := a;
+  self.den := 1;
+  RETURN self;
+END FromInt;
+
+PROCEDURE <A NAME="Abs"><procedure>Abs</procedure></A>(self: T): T =
+BEGIN
+  RETURN NEW(T, num := ABS(self.num), den := self.den);
+END Abs;
+
+PROCEDURE <A NAME="Opposite"><procedure>Opposite</procedure></A>(self: T): T =
+BEGIN
+  RETURN NEW(T, num := -self.num, den := self.den);
+END Opposite;
+
+PROCEDURE <A NAME="Plus"><procedure>Plus</procedure></A>(self, other: T): T =
+VAR
+  result := NEW( T,
+      num := self.num * other.den + self.den * other.num,
+      den := self.den * other.den
+  );
+BEGIN
+  Simplify(result);
+  RETURN result;
+END Plus;
+
+PROCEDURE <A NAME="Minus"><procedure>Minus</procedure></A>(self, other: T): T =
+VAR
+  result := NEW( T,
+      num := self.num * other.den - self.den * other.num,
+      den := self.den * other.den
+  );
+BEGIN
+  Simplify(result);
+  RETURN result;
+END Minus;
+
+PROCEDURE <A NAME="Times"><procedure>Times</procedure></A>(self, other: T): T =
+VAR
+  result := NEW( T,
+      num := self.num * other.num,
+      den := self.den * other.den
+  );
+BEGIN
+  Simplify(result);
+  RETURN result;
+END Times;
+
+PROCEDURE <A NAME="DividedBy"><procedure>DividedBy</procedure></A>(self, other: T): T RAISES { ZeroDenominator } =
+VAR
+  result := NEW( T,
+      num := self.num * other.den,
+      den := self.den * other.num
+  );
+BEGIN
+  IF result.den = 0 THEN RAISE ZeroDenominator; END;
+  IF result.den &lt; 0 THEN
+    result.num := -result.num;
+    result.den := -result.den;
+  END;
+  Simplify(result);
+  RETURN result;
+END DividedBy;
+
+PROCEDURE <A NAME="IntegerDivision"><procedure>IntegerDivision</procedure></A>(self: T; other: INTEGER): T
+RAISES { ZeroDenominator } =
+VAR
+  result := NEW( T, num := self.num, den := self.den * other );
+BEGIN
+  IF other = 0 THEN RAISE ZeroDenominator; END;
+  Simplify(result);
+  RETURN result;
+END IntegerDivision;
+
+PROCEDURE <A NAME="Equals"><procedure>Equals</procedure></A>(self, other: T): BOOLEAN =
+BEGIN
+  (* this trick works only because we simplify after each operation *)
+  RETURN (self.num = other.num) AND (self.den = other.den);
+END Equals;
+
+PROCEDURE <A NAME="NotEqualTo"><procedure>NotEqualTo</procedure></A>(self, other: T): BOOLEAN =
+BEGIN
+  (* this trick works only because we simplify after each operation *)
+  RETURN (self.num # other.num) OR (self.den # other.den);
+END NotEqualTo;
+
+PROCEDURE <A NAME="LessThan"><procedure>LessThan</procedure></A>(self, other: T): BOOLEAN =
+BEGIN
+  RETURN self.num * other.den &lt; self.den * other.num;
+END LessThan;
+
+PROCEDURE <A NAME="LessEqual"><procedure>LessEqual</procedure></A>(self, other: T): BOOLEAN =
+BEGIN
+  RETURN self.num * other.den &lt;= self.den * other.num;
+END LessEqual;
+
+PROCEDURE <A NAME="GreaterEqual"><procedure>GreaterEqual</procedure></A>(self, other: T): BOOLEAN =
+BEGIN
+  RETURN self.num * other.den &gt;= self.den * other.num;
+END GreaterEqual;
+
+PROCEDURE <A NAME="Greater"><procedure>Greater</procedure></A>(self, other: T): BOOLEAN =
+BEGIN
+  RETURN self.num * other.den &gt; self.den * other.num;
+END Greater;
+
+PROCEDURE <A NAME="Inc"><procedure>Inc</procedure></A>(self: T; step: CARDINAL) =
+BEGIN
+  INC(self.num, step * self.den);
+END Inc;
+
+PROCEDURE <A NAME="Dec"><procedure>Dec</procedure></A>(self: T; step: CARDINAL) =
+BEGIN
+  DEC(self.num, step * self.den);
+END Dec;
+
+PROCEDURE <A NAME="IsInt"><procedure>IsInt</procedure></A>(self: T): BOOLEAN =
+BEGIN
+  RETURN self.den = 1;
+END IsInt;
+
+PROCEDURE <A NAME="One"><procedure>One</procedure></A>(): T =
+BEGIN
+  TRY
+    RETURN NEW(T).init(1, 1);
+  EXCEPT ZeroDenominator =&gt;
+    IO.Put(&quot;Something went very wrong.\n&quot;);
+    RETURN NIL;
+  END;
+END One;
+
+PROCEDURE <A NAME="Zero"><procedure>Zero</procedure></A>(): T =
+BEGIN
+  TRY
+    RETURN NEW(T).init(0, 1);
+  EXCEPT ZeroDenominator =&gt;
+    IO.Put(&quot;Something went very wrong.\n&quot;);
+    RETURN NIL;
+  END;
+END Zero;
+
+PROCEDURE <A NAME="PutRat"><procedure>PutRat</procedure></A>(a: T) =
+BEGIN
+  IO.PutInt(a.num);
+  IF a.den # 1 THEN
+    IO.Put(&quot; / &quot;); IO.PutInt(a.den);
+  END;
+END PutRat;
+
+BEGIN
+END Frac.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

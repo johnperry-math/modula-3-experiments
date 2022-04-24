@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: tree/src/TestTree.m3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>tree/src/TestTree.m3</H2></A><HR>
+<inModule>
+<PRE>MODULE <module>TestTree</module> EXPORTS <implements>Main</implements>;
+
+IMPORT <A HREF="IntegerTree.i3.html">IntegerTree</A> AS IT, Random, IO;
+
+VAR
+
+  n: INTEGER;
+  t: IT.T := NIL;
+  random: Random.T;
+
+PROCEDURE <A NAME="PrintTreeRecursively"><procedure>PrintTreeRecursively</procedure></A>(READONLY t: IT.T; printHeight: BOOLEAN := FALSE) =
+BEGIN
+  IF IT.Prev(t) # NIL THEN
+    IO.Put(&quot; ( &quot;);
+    PrintTreeRecursively(IT.Prev(t));
+    IO.Put(&quot; ) / &quot;);
+  END;
+  IO.Put(&quot;&lt; &quot;);
+  IO.PutInt(IT.Value(t));
+  IF IT.IsRed(t) THEN IO.PutChar('R');
+  ELSE IO.PutChar('B');
+  END;
+  IO.Put(&quot;, &quot;); IO.PutInt(IT.Size(t));
+  IF printHeight THEN IO.Put(&quot;, &quot;); IO.PutInt(IT.Height(t)); END;
+  IO.Put(&quot; &gt;&quot;);
+  IF IT.Succ(t) # NIL THEN
+    IO.Put(&quot; \\ ( &quot;);
+    PrintTreeRecursively(IT.Succ(t));
+    IO.Put(&quot; ) &quot;);
+  END;
+END PrintTreeRecursively;
+
+VAR
+
+  node: IT.T;
+  values := ARRAY [1..10] OF INTEGER { 40, 70, 29, 2, 71, 95, 19, 94, 19, 30 };
+  fromArray: BOOLEAN := FALSE;
+
+BEGIN
+
+  (* initialization *)
+  random := NEW(Random.Default).init();
+
+  (* insert random numbers into the tree *)
+  FOR i := 1 TO 10 DO
+    IF fromArray THEN
+      n := values[i];
+    ELSE
+      n := random.integer(0, 100);
+    END;
+    IO.Put(&quot;Adding &quot;); IO.PutInt(n); IO.Put(&quot;: &quot;);
+    IF IT.Insert(t, n) THEN
+      IO.Put(&quot;Success!\n\n&quot;);
+    ELSE
+      IO.Put(&quot;Nope: already in it!\n\n&quot;);
+    END;
+  END;
+  PrintTreeRecursively(t, TRUE);
+  IO.PutChar('\n');
+
+  (* find and remove random numbers from the tree *)
+  FOR i := 1 TO 10 DO
+    IF fromArray THEN
+      IF i MOD 2 = 1 THEN n := 30;
+      ELSE n := 71;
+      END;
+    ELSE
+      n := random.integer(0, 100);
+    END;
+    IO.Put(&quot;Has &quot;); IO.PutInt(n); IO.Put(&quot;? &quot;);
+    node := IT.Find(t, n);
+    IF node = NIL THEN
+      IO.Put(&quot;Not present!\n&quot;);
+    ELSE
+      IO.Put(&quot;Yes! Removing.\n&quot;);
+      IT.RemoveNode(node);
+      IO.Put(&quot;Root: &quot;); IO.PutInt(IT.Value(t)); IO.PutChar('\n');
+    END;
+  END;
+  PrintTreeRecursively(t);
+  IO.PutChar('\n');
+
+END TestTree.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

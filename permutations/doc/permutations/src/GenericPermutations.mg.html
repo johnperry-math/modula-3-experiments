@@ -1,0 +1,105 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: permutations/src/GenericPermutations.mg</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>permutations/src/GenericPermutations.mg</H2></A><HR>
+<inModule>
+<PRE>GENERIC MODULE <genericModule><A HREF="GenericPermutations.ig.html">GenericPermutations</A></genericModule>(Domain, DomainSeq, DomainSet, DomainSeqSeq);
+</PRE><P>
+  <CODE>Domain</CODE> is where the things to permute come from.
+  <CODE>DomainSeq</CODE> is a <CODE>Sequence</CODE> of <CODE>Domain</CODE>.
+  <CODE>DomainSet</CODE> is a <CODE>Set</CODE> of <CODE>Domain</CODE>.
+  <CODE>DomainSeqSeq</CODE> is a <CODE>Sequence</CODE> of <CODE>DomainSeq</CODE>.
+
+
+<P><PRE>PROCEDURE <A NAME="GeneratePermutations"><procedure>GeneratePermutations</procedure></A>(
+  READONLY chosen: DomainSeq.T;
+  READONLY remaining: DomainSet.T;
+  READONLY result: DomainSeqSeq.T
+) =
+</PRE><P>
+  Recursively generates all the permutations of elements
+  in the union of <CODE>chosen</CODE> and <CODE>remaining</CODE>.
+  Values in <CODE>chosen</CODE> have already been chosen;
+  values in <CODE>remaining</CODE> can still be chosen.
+  If <CODE>remaining</CODE> is empty, it adds the permutation to <CODE>result</CODE>.
+  Otherwise, it picks each element in <CODE>remaining</CODE>, removes it,
+  adds it to <CODE>chosen</CODE>, recursively calls itself,
+  then removes the last element of <CODE>chosen</CODE> and adds it back to <CODE>remaining</CODE>.
+
+
+<P><PRE>VAR
+
+  r: Domain.T; (* element added to permutation *)
+
+  iterator := remaining.iterate(); (* to iterate through remaining elements *)
+
+  values := NEW(DomainSeq.T).init(remaining.size());
+  (* used to store values for iteration *)
+
+BEGIN
+
+  (* cannot safely modify a set while iterating, so we'll store the values *)
+  WHILE iterator.next(r) DO values.addhi(r); END;
+
+  (* now loop through the stored values *)
+  FOR i := 0 TO values.size() - 1 DO
+
+    (* remove from &quot;remaining&quot; and add to &quot;chosen&quot; *)
+    r := values.get(i);
+    EVAL remaining.delete(r);
+    chosen.addhi(r);
+
+    (* if this is not the last remaining elements, call recursively *)
+    IF remaining.size() # 0 THEN
+      GeneratePermutations(chosen, remaining, result);
+    ELSE
+      (* we have a new permutation; add a copy to the set *)
+      VAR newPerm := NEW(DomainSeq.T).init(chosen.size());
+      BEGIN
+        FOR i := 0 TO chosen.size() - 1 DO
+          newPerm.addhi(chosen.get(i));
+        END;
+        result.addhi(newPerm);
+      END;
+    END;
+
+    (* move r back from chosen *)
+    EVAL remaining.insert(chosen.remhi());
+
+  END;
+
+END GeneratePermutations;
+
+BEGIN
+END GenericPermutations.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

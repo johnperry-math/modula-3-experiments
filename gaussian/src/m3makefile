@@ -1,0 +1,20 @@
+import("libm3")
+
+template("matrix")
+
+Generic_interface("Matrix")
+Generic_module("Matrix")
+
+interface("IntegerRing")
+module("IntegerRing")
+
+interface("ModularRing")
+module("ModularRing")
+
+Matrix("Int", "IntegerRing")
+Matrix("Mod", "ModularRing")
+
+implementation("GaussianElimination")
+
+build_standalone()
+program("GaussianElimination")

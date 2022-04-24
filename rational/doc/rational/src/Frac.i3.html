@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: rational/src/Frac.i3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>rational/src/Frac.i3</H2></A><HR>
+<inInterface>
+<PRE>INTERFACE <interface><A HREF="Frac.m3.html">Frac</A></interface>;
+</PRE> Implements rational numbers. 
+
+<P><PRE>EXCEPTION ZeroDenominator;
+</PRE><BLOCKQUOTE><EM><P>
+  The module will raise <CODE>ZeroDenominator</CODE> whenever one attempts to initialize
+  a rational with the denominator zero, or to divide by zero.
+</EM></BLOCKQUOTE><PRE>
+
+TYPE
+
+  <A HREF="Frac.m3.html#T">T</A> &lt;: Public;
+  Public = OBJECT
+  METHODS
+    (* initialization and conversion *)
+    init(a, b: INTEGER): T RAISES { ZeroDenominator };
+    fromInt(a: INTEGER): T;
+    (* unary operators *)
+    abs(): T;
+    opposite(): T;
+    (* binary operators *)
+    plus(other: T): T;
+    minus(other: T): T;
+    times(other: T): T;
+    dividedBy(other: T): T RAISES { ZeroDenominator };
+    integerDivision(other: INTEGER): T RAISES { ZeroDenominator };
+    (* relations *)
+    equals(other: T): BOOLEAN;
+    notEqualTo(other: T): BOOLEAN;
+    lessThan(other: T): BOOLEAN;
+    lessEqual(other: T): BOOLEAN;
+    greaterEqual(other: T): BOOLEAN;
+    greater(other: T): BOOLEAN;
+    (* other easily-checked properties *)
+    isInt(): BOOLEAN;
+    (* inc/decrement *)
+    inc(step: CARDINAL := 1);
+    dec(step: CARDINAL := 1);
+  END;
+</PRE><P>
+  The point of most of <CODE>T</CODE>'s methods will be obvious from the names, but
+  <CODE>isInt</CODE> checks whether the rational is an integer.
+
+
+<P><PRE>PROCEDURE <A HREF="Frac.m3.html#One">One</A>():  T;
+</PRE><BLOCKQUOTE><EM> returns a new <CODE>T</CODE> that represents the number 1 </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Frac.m3.html#Zero">Zero</A>(): T;
+</PRE><BLOCKQUOTE><EM> returns a new <CODE>T</CODE> that represents the number 0 </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="Frac.m3.html#PutRat">PutRat</A>(a: T);
+</PRE><BLOCKQUOTE><EM> prints <CODE>a</CODE> in the form 'num / den' </EM></BLOCKQUOTE><PRE>
+
+END Frac.</PRE>
+</inInterface>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

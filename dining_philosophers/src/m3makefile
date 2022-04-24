@@ -1,0 +1,6 @@
+import("libm3")
+
+implementation("DiningPhilosophers")
+
+build_standalone()
+program("DiningPhilosophers")

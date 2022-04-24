@@ -1,0 +1,5 @@
+readonly proc Matrix (nm, elt) is
+  local matrix = nm & "Matrix"
+  build_generic_intf ( matrix, "Matrix", [elt], VISIBLE )
+  build_generic_impl ( matrix, "Matrix", [elt])
+end

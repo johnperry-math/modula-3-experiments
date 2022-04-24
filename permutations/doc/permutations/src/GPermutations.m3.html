@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: permutations/src/GPermutations.m3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>permutations/src/GPermutations.m3</H2></A><HR>
+<inModule>
+<PRE>MODULE <module>GPermutations</module> EXPORTS <implements>Main</implements>;
+
+IMPORT IO, IntSeq, IntSetTree, IntSeqSeq, IntPermutations;
+
+CONST
+
+  n = 7;
+
+VAR
+
+  chosen: IntSeq.T;
+  remaining: IntSetTree.T;
+  result: IntSeqSeq.T;
+
+PROCEDURE <A NAME="Factorial"><procedure>Factorial</procedure></A>(n: CARDINAL): CARDINAL =
+VAR result := 1;
+BEGIN
+  FOR i := 2 TO n DO
+    result := result * i;
+  END;
+  RETURN result;
+END Factorial;
+
+BEGIN
+
+  (* initial setup *)
+  chosen := NEW(IntSeq.T).init(n);
+  remaining := NEW(IntSetTree.T).init();
+  result := NEW(IntSeqSeq.T).init(Factorial(n));
+  FOR i := 1 TO n DO EVAL remaining.insert(i); END;
+
+  IntPermutations.GeneratePermutations(chosen, remaining, result);
+
+  IO.Put(&quot;Printing &quot;); IO.PutInt(result.size());
+  IO.Put(&quot; permutations of &quot;); IO.PutInt(n); IO.Put(&quot; elements \n&quot;);
+  FOR i := 0 TO result.size() - 1 DO
+    FOR j := 0 TO result.get(i).size() - 1 DO
+      IO.PutInt(result.get(i).get(j)); IO.PutChar(' ');
+    END;
+    IO.PutChar('\n');
+  END;
+
+END GPermutations.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

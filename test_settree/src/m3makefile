@@ -1,0 +1,10 @@
+import("libm3")
+import("set")
+
+override("tree", "/Users/user/common/modula3/")
+include_pkg("tree")
+
+implementation("TestSetTree")
+
+build_standalone()
+program("TestSetTree")

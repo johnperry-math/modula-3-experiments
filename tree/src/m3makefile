@@ -1,0 +1,13 @@
+% Copyright (C) 2018, John Perry
+
+Generic_module("Tree")
+template("tree")
+
+Generic_module("SetTree")
+
+Tree("Int",  "Integer" )
+Tree("Ref",  "Refany"  )
+Tree("Text", "Text"    )
+Tree("Real", "Real"    )
+
+SetTree("Int", "Integer")

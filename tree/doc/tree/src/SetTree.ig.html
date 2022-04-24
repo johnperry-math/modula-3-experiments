@@ -1,0 +1,97 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: tree/src/SetTree.ig</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>tree/src/SetTree.ig</H2></A><HR>
+<inInterface>
+<PRE></PRE><P>
+Copyright (C) 2018, John Perry.
+Last modified on Sun Nov 4 2018 by John Perry.
+
+
+<P>
+<P>
+  <CODE>SetTree</CODE> is a generic interface defining sets of <CODE>Elem.T</CODE>'s,
+  implemented as Red/Black Trees.
+  <P>
+
+
+<P><PRE>GENERIC INTERFACE <genericInterface><A HREF="SetTree.mg.html">SetTree</A></genericInterface>(ElemSet, ElemTree);
+</PRE><BLOCKQUOTE><EM><P>
+  WHERE <CODE>Elem.T</CODE> is a type that contains
+<P>
+<PRE>
+      PROCEDURE Equal  (e1, e2: Elem.T): BOOLEAN;
+      PROCEDURE Compare(e1, e2: Elem.T): INTEGER;
+</PRE>
+  <CODE>ElemSet = Set(Elem)</CODE>
+<P>
+  <CODE>Equal</CODE> must be an equivalence relation.
+<P>
+  <CODE>Compare</CODE> must be a total order. It may be declared with any parameter mode,
+  but must have no visible side-effects.
+<P>
+</EM></BLOCKQUOTE><PRE>
+
+TYPE
+
+  Public = ElemSet.T OBJECT METHODS
+    init(): T;
+    height(): CARDINAL;
+    root(): ElemTree.T;
+  END;
+  <A HREF="SetTree.mg.html#T">T</A> &lt;: Public;
+  <A HREF="SetTree.mg.html#Iterator">Iterator</A> &lt;: ElemSet.Iterator;
+</PRE><P>
+The call <CODE>self.height()</CODE> returns the tree's height.
+A red/black tree is not necessarily balanced, so this call traverses the tree.
+Invoke it with care.
+
+
+<P>
+The call <CODE>self.root()</CODE> returns the underlying <CODE>Tree</CODE> object,
+in case you wish to do something with it.
+
+
+<P>
+<P>
+  If <CODE>self</CODE> is an object of type <CODE>SetTree.T</CODE>, the expression
+<P>
+<PRE>
+      NEW(SetTree.T).init()
+</PRE>
+  creates a new, empty set.
+<P>
+
+
+<P><PRE>END SetTree.</PRE>
+</inInterface>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

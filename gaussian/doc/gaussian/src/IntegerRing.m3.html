@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: gaussian/src/IntegerRing.m3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>gaussian/src/IntegerRing.m3</H2></A><HR>
+<inModule>
+<PRE>MODULE <module><implements><A HREF="IntegerRing.i3.html">IntegerRing</A></implements></module>;
+
+IMPORT IO;
+
+PROCEDURE <A NAME="Nonzero"><procedure>Nonzero</procedure></A>(n: T): BOOLEAN =
+BEGIN
+  RETURN n # 0;
+END Nonzero;
+
+PROCEDURE <A NAME="Plus"><procedure>Plus</procedure></A>(a, b: T): T =
+BEGIN
+  RETURN a + b;
+END Plus;
+
+PROCEDURE <A NAME="Minus"><procedure>Minus</procedure></A>(a, b: T): T =
+BEGIN
+  RETURN a - b;
+END Minus;
+
+PROCEDURE <A NAME="Times"><procedure>Times</procedure></A>(a, b: T): T =
+BEGIN
+  RETURN a * b;
+END Times;
+
+PROCEDURE <A NAME="Print"><procedure>Print</procedure></A>(a: T) =
+BEGIN
+  IO.PutInt(a);
+END Print;
+
+BEGIN
+END IntegerRing.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

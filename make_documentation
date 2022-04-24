@@ -1,0 +1,4 @@
+m3tohtml -root /Users/user/common/modula3 -dest tree/doc tree
+m3tohtml -root /Users/user/common/modula3 -dest rational/doc rational
+m3tohtml -root /Users/user/common/modula3 -dest gaussian/doc gaussian
+m3tohtml -root /Users/user/common/modula3 -dest permutations/doc permutations

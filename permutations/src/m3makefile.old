@@ -1,0 +1,25 @@
+import("libm3")
+import("set")
+
+override("tree", "/Users/user/common/modula3/")
+include_pkg("tree")
+
+Sequence("IntSeq", "IntSeq")
+
+generic_interface("GenericPermutations")
+generic_module("GenericPermutations")
+
+readonly proc GenericPermutations (nm, elt) is
+  local gp = nm & "Permutations"
+  local elseq = nm & "Seq"
+  local elset = nm & "Set"
+  local elseqseq = nm & "SeqSeq"
+  build_generic_intf (gp, "GenericPermutations", [elseq, elset, elseqseq], VISIBLE)
+  build_generic_impl (gp, "GenericPermutations", [elt, elseq, elset, elseqseq])
+end
+
+GenericPermutations("Int", "Integer")
+
+implementation("GPermutations")
+build_standalone()
+program("GPermutations")

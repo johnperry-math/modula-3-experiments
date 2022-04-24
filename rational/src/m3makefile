@@ -1,0 +1,8 @@
+import("libm3")
+
+module("Frac")
+
+implementation("TestRational")
+
+build_standalone()
+program("TestRational")

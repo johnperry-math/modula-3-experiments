@@ -1,0 +1,96 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: gaussian/src/ModularRing.m3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>gaussian/src/ModularRing.m3</H2></A><HR>
+<inModule>
+<PRE>MODULE <module><implements><A HREF="ModularRing.i3.html">ModularRing</A></implements></module>;
+
+IMPORT IO;
+
+PROCEDURE <A NAME="Init"><procedure>Init</procedure></A>(VAR a: T; v: INTEGER; m: CARDINAL) =
+BEGIN
+  &lt;* ASSERT m # 0 *&gt;
+  a.value := v MOD m;
+  a.modulus := m;
+END Init;
+
+PROCEDURE <A NAME="Nonzero"><procedure>Nonzero</procedure></A>(n: T): BOOLEAN =
+BEGIN
+  RETURN n.value # 0;
+END Nonzero;
+
+PROCEDURE <A NAME="Plus"><procedure>Plus</procedure></A>(a, b: T): T =
+VAR
+  result: T;
+BEGIN
+  &lt;* ASSERT a.modulus = b.modulus *&gt;
+  &lt;* ASSERT a.modulus # 0 *&gt;
+  result.value := (a.value + b.value) MOD a.modulus;
+  result.modulus := a.modulus;
+  RETURN result;
+END Plus;
+
+PROCEDURE <A NAME="Minus"><procedure>Minus</procedure></A>(a, b: T): T =
+VAR
+  result: T;
+BEGIN
+  &lt;* ASSERT a.modulus = b.modulus *&gt;
+  &lt;* ASSERT a.modulus # 0 *&gt;
+  WITH mod = a.modulus DO
+    result.value := (a.value + mod - b.value) MOD mod;
+    result.modulus := mod;
+  END;
+  RETURN result;
+END Minus;
+
+PROCEDURE <A NAME="Times"><procedure>Times</procedure></A>(a, b: T): T =
+VAR
+  result: T;
+BEGIN
+  &lt;* ASSERT a.modulus = b.modulus *&gt;
+  result.value := (a.value * b.value) MOD a.modulus;
+  result.modulus := a.modulus;
+  RETURN result;
+END Times;
+
+PROCEDURE <A NAME="Print"><procedure>Print</procedure></A>(a: T; withModulus: BOOLEAN) =
+BEGIN
+  IO.PutInt(a.value);
+  IF withModulus THEN
+    IO.PutChar('m'); IO.PutInt(a.modulus);
+  END;
+END Print;
+
+BEGIN
+END ModularRing.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

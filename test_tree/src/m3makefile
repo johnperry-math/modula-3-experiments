@@ -1,0 +1,10 @@
+import("libm3")
+import("set")
+
+override("tree", "/Users/perry/common/modula3")
+include_pkg("tree")
+
+implementation("TestTree")
+
+build_standalone()
+program("TestTree")

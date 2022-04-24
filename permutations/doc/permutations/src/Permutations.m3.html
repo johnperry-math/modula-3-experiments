@@ -1,0 +1,94 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: permutations/src/Permutations.m3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>permutations/src/Permutations.m3</H2></A><HR>
+<inModule>
+<PRE>MODULE <module>Permutations</module> EXPORTS <implements>Main</implements>;
+
+IMPORT IO, IntSeq;
+
+CONST n = 3;
+
+TYPE Domain = SET OF [ 1.. n ];
+
+VAR
+
+  chosen: IntSeq.T;
+  values := Domain { };
+
+PROCEDURE <A NAME="GeneratePermutations"><procedure>GeneratePermutations</procedure></A>(VAR chosen: IntSeq.T; remaining: Domain) =
+</PRE><BLOCKQUOTE><EM><P>
+  Recursively generates all the permutations of elements
+  in the union of <CODE>chosen</CODE> and <CODE>values</CODE>.
+  Values in <CODE>chosen</CODE> have already been chosen;
+  values in <CODE>remaining</CODE> can still be chosen.
+  If <CODE>remaining</CODE> is empty, it prints the sequence and returns.
+  Otherwise, it picks each element in <CODE>remaining</CODE>, removes it,
+  adds it to <CODE>chosen</CODE>, recursively calls itself,
+  then removes the last element of <CODE>chosen</CODE> and adds it back to <CODE>remaining</CODE>.
+</EM></BLOCKQUOTE><PRE>
+BEGIN
+  FOR i := 1 TO n DO
+    (* check if each element is in &quot;remaining&quot; *)
+    IF i IN remaining THEN
+      (* if so, remove from &quot;remaining&quot; and add to &quot;chosen&quot; *)
+      remaining := remaining - Domain { i };
+      chosen.addhi(i);
+      IF remaining # Domain { } THEN
+        (* still something to process? do it *)
+        GeneratePermutations(chosen, remaining);
+      ELSE
+        (* otherwise, print what we've chosen *)
+        FOR j := 0 TO chosen.size() - 2 DO
+          IO.PutInt(chosen.get(j)); IO.Put(&quot;, &quot;);
+        END;
+        IO.PutInt(chosen.gethi());
+        IO.PutChar('\n');
+      END;
+      (* add &quot;i&quot; back to &quot;remaining&quot; and remove from &quot;chosen&quot; *)
+      remaining := remaining + Domain { i };
+      EVAL chosen.remhi();
+    END;
+  END;
+END GeneratePermutations;
+
+BEGIN
+
+  (* initial setup *)
+  chosen := NEW(IntSeq.T).init(n);
+  FOR i := 1 TO n DO values := values + Domain { i }; END;
+
+  GeneratePermutations(chosen, values);
+
+END Permutations.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,32 @@
+% Copyright (C) 2018, John Perry
+%
+%  Quake functions to instantiate a generic list.
+%
+
+readonly proc Tree (nm, elt) is
+  local tree = nm & "Tree"
+  build_generic_intf (tree, "Tree", [elt], VISIBLE)
+  build_generic_impl (tree, "Tree", [elt])
+end
+
+readonly proc tree (nm, elt) is
+  local tree = nm & "Tree"
+  build_generic_intf (tree, "Tree", [elt], HIDDEN)
+  build_generic_impl (tree, "Tree", [elt])
+end
+
+readonly proc SetTree (nm, elt) is
+  local set = nm & "Set"
+  local setTree = nm & "SetTree"
+  local elemTree = nm & "Tree"
+  build_generic_intf (setTree, "SetTree", [set, elemTree], VISIBLE)
+  build_generic_impl (setTree, "SetTree", [elt, set, elemTree])
+end
+
+readonly proc setTree (nm, elt) is
+  local set = nm & "Set"
+  local setTree = nm & "SetTree"
+  local elemTree = nm & "Tree"
+  build_generic_intf (setTree, "SetTree", [set], HIDDEN)
+  build_generic_impl (setTree, "SetTree", [elt, set, elemTree])
+end

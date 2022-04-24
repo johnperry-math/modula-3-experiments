@@ -1,0 +1,139 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: tree/src/SetTree.mg</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>tree/src/SetTree.mg</H2></A><HR>
+<inModule>
+<PRE>GENERIC MODULE <genericModule><A HREF="SetTree.ig.html">SetTree</A></genericModule>(Elem, ElemSet, ElemTree);
+
+TYPE
+
+  REVEAL <A NAME="T">T</A> = Public BRANDED OBJECT
+
+    t: ElemTree.T;
+
+  OVERRIDES
+
+    init := Init;
+    fromArray := FromArray;
+    copy := Copy;
+    member := Member;
+    insert := Insert;
+    delete := Delete;
+    size := Size;
+    iterate := Iterate;
+
+    height := Height;
+    root := Root;
+
+  END;
+
+  <A NAME="Iterator">Iterator</A> = ElemSet.Iterator BRANDED OBJECT
+    node: ElemTree.T;
+  OVERRIDES
+    next := Next;
+  END;
+
+PROCEDURE <A NAME="Init"><procedure>Init</procedure></A>(self: T): T =
+BEGIN
+  RETURN self;
+END Init;
+
+PROCEDURE <A NAME="FromArray"><procedure>FromArray</procedure></A>(self: T; READONLY e: ARRAY OF Elem.T): ElemSet.T =
+BEGIN
+  self.t := ElemTree.FromArray(e);
+  RETURN self;
+END FromArray;
+
+PROCEDURE <A NAME="Copy"><procedure>Copy</procedure></A>(self: T): ElemSet.T =
+VAR
+  result := NEW(T).init();
+BEGIN
+  ElemTree.Copy(self.t, result.t);
+  RETURN result;
+END Copy;
+
+PROCEDURE <A NAME="Member"><procedure>Member</procedure></A>(self: T; e: Elem.T): BOOLEAN =
+BEGIN
+  RETURN ElemTree.Member(self.t, e);
+END Member;
+
+PROCEDURE <A NAME="Insert"><procedure>Insert</procedure></A>(self: T; e: Elem.T): BOOLEAN =
+BEGIN
+  RETURN ElemTree.Insert(self.t, e);
+END Insert;
+
+PROCEDURE <A NAME="Size"><procedure>Size</procedure></A>(self: T): CARDINAL =
+BEGIN
+  RETURN ElemTree.Size(self.t);
+END Size;
+
+PROCEDURE <A NAME="Height"><procedure>Height</procedure></A>(self: T): CARDINAL =
+BEGIN
+  RETURN ElemTree.Height(self.t);
+END Height;
+
+PROCEDURE <A NAME="Root"><procedure>Root</procedure></A>(self: T): ElemTree.T =
+BEGIN
+  RETURN self.t;
+END Root;
+
+PROCEDURE <A NAME="Delete"><procedure>Delete</procedure></A>(self: T; e: Elem.T): BOOLEAN =
+VAR
+  node: ElemTree.T := ElemTree.Find(self.t, e);
+  exists: BOOLEAN := node # NIL;
+BEGIN
+  IF exists THEN self.t := ElemTree.RemoveNode(node); END;
+  RETURN exists;
+END Delete;
+
+PROCEDURE <A NAME="Iterate"><procedure>Iterate</procedure></A>(self: T): ElemSet.Iterator =
+VAR
+  res := NEW(Iterator, node := ElemTree.First(self.t));
+BEGIN
+  RETURN res;
+END Iterate;
+
+PROCEDURE <A NAME="Next"><procedure>Next</procedure></A>(iter: Iterator; VAR e: Elem.T): BOOLEAN =
+VAR result := FALSE;
+BEGIN
+  IF iter.node # NIL THEN
+    e := ElemTree.Value(iter.node);
+    iter.node := ElemTree.Succ(iter.node);
+    result := TRUE;
+  END;
+  RETURN result;
+END Next;
+
+BEGIN
+END SetTree.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

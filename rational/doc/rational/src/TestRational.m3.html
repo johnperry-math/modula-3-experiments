@@ -1,0 +1,121 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: rational/src/TestRational.m3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>rational/src/TestRational.m3</H2></A><HR>
+<inModule>
+<PRE>MODULE <module>TestRational</module> EXPORTS <implements>Main</implements>;
+
+IMPORT IO, <A HREF="Frac.i3.html">Frac</A> AS R, Word;
+
+FROM Math IMPORT sqrt;
+
+PROCEDURE <A NAME="PutBool"><procedure>PutBool</procedure></A>(b: BOOLEAN) =
+BEGIN
+  IF b THEN IO.Put(&quot;true&quot;);
+  ELSE IO.Put(&quot;false&quot;);
+  END;
+END PutBool;
+
+VAR
+
+  a, b: R.T;
+
+  n: Word.T := 2;
+  limit: Word.T := 1;
+
+BEGIN
+
+  TRY
+    a := NEW(R.T).init(2,3);
+    b := NEW(R.T).init(-3,4);
+  EXCEPT | R.ZeroDenominator =&gt;
+    IO.Put(&quot;Zero division!\n&quot;);
+  END;
+
+  R.PutRat(a); IO.Put(&quot; op &quot;); R.PutRat(b); IO.Put(&quot; = \n&quot;);
+
+  IO.Put(&quot;  + : &quot;); R.PutRat(a.plus(b));  IO.PutChar('\n');
+  IO.Put(&quot;  - : &quot;); R.PutRat(a.minus(b)); IO.PutChar('\n');
+  IO.Put(&quot;  * : &quot;); R.PutRat(a.times(b)); IO.PutChar('\n');
+
+  TRY
+    IO.Put(&quot;  /: &quot;); R.PutRat(a.dividedBy(b)); IO.PutChar('\n');
+  EXCEPT | R.ZeroDenominator =&gt;
+    IO.Put(&quot;Zero division\n&quot;);
+  END;
+
+  IO.Put(&quot;  &lt;  : &quot;); PutBool(a.lessThan(b));     IO.PutChar('\n');
+  IO.Put(&quot;  &lt;= : &quot;); PutBool(a.lessEqual(b));    IO.PutChar('\n');
+  IO.Put(&quot;  &gt;= : &quot;); PutBool(a.greaterEqual(b)); IO.PutChar('\n');
+  IO.Put(&quot;  &gt;  : &quot;); PutBool(a.greater(b));      IO.PutChar('\n');
+
+  IO.PutChar('\n');
+
+  IO.Put(&quot;Increasing &quot;); R.PutRat(a); IO.Put(&quot; by\n&quot;);
+  IO.Put(&quot;  1 gives &quot;); a.inc(1); R.PutRat(a); IO.PutChar('\n');
+  IO.Put(&quot;  3 gives &quot;); a.inc(3); R.PutRat(a); IO.PutChar('\n');
+
+  IO.Put(&quot;Decreasing &quot;); R.PutRat(a); IO.Put(&quot; by\n&quot;);
+  IO.Put(&quot;  1 gives &quot;); a.dec(1); R.PutRat(a); IO.PutChar('\n');
+  IO.Put(&quot;  3 gives &quot;); a.dec(3); R.PutRat(a); IO.PutChar('\n');
+
+  limit := Word.LeftShift(limit, 19);
+  TRY
+    WHILE n &lt; limit DO
+        VAR
+          sum := NEW(R.T).init(1, n);
+          maxFac := FLOOR(sqrt(FLOAT(n, LONGREAL)));
+        BEGIN
+          FOR i := 2 TO maxFac DO
+            IF n MOD i = 0 THEN
+              sum := sum.plus(NEW(R.T).init(1, i))
+                        .plus(NEW(R.T).init(1, n DIV i));
+            END;
+          END;
+          IF sum.isInt() THEN
+            IO.Put(&quot;sum of reciprocal factors of &quot;); IO.PutInt(n);
+            IO.Put(&quot; is exactly &quot;); R.PutRat(sum);
+            IF sum.equals(R.One()) THEN
+              IO.Put(&quot; perfect!&quot;);
+            END;
+            IO.PutChar('\n');
+          END;
+        END;
+      INC(n, 2);
+    END;
+  EXCEPT R.ZeroDenominator =&gt;
+    IO.Put(&quot;Something went very wrong\n&quot;);
+  END;
+
+END TestRational.</PRE>
+</inModule>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

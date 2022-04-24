@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: permutations/src/tree.tmpl</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>permutations/src/tree.tmpl</H2></A><HR>
+<PRE>% Copyright (C) 2018, John Perry
+%
+%  Quake functions to instantiate a generic list.
+%
+
+readonly proc Tree (nm, elt) is
+  local tree = nm &amp; &quot;Tree&quot;
+  build_generic_intf (tree, &quot;Tree&quot;, [elt], VISIBLE)
+  build_generic_impl (tree, &quot;Tree&quot;, [elt])
+end
+
+readonly proc tree (nm, elt) is
+  local tree = nm &amp; &quot;Tree&quot;
+  build_generic_intf (tree, &quot;Tree&quot;, [elt], HIDDEN)
+  build_generic_impl (tree, &quot;Tree&quot;, [elt])
+end
+
+readonly proc SetTree (nm, elt) is
+  local set = nm &amp; &quot;Set&quot;
+  local setTree = nm &amp; &quot;SetTree&quot;
+  local elemTree = nm &amp; &quot;Tree&quot;
+  build_generic_intf (setTree, &quot;SetTree&quot;, [set, elemTree], VISIBLE)
+  build_generic_impl (setTree, &quot;SetTree&quot;, [elt, set, elemTree])
+end
+
+readonly proc setTree (nm, elt) is
+  local set = nm &amp; &quot;Set&quot;
+  local setTree = nm &amp; &quot;SetTree&quot;
+  local elemTree = nm &amp; &quot;Tree&quot;
+  build_generic_intf (setTree, &quot;SetTree&quot;, [set], HIDDEN)
+  build_generic_impl (setTree, &quot;SetTree&quot;, [elt, set, elemTree])
+end</PRE>
+</inInterface>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

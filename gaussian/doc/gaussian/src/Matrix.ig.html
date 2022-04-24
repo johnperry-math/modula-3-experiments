@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: gaussian/src/Matrix.ig</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>gaussian/src/Matrix.ig</H2></A><HR>
+<inInterface>
+<PRE>GENERIC INTERFACE <genericInterface><A HREF="Matrix.mg.html">Matrix</A></genericInterface>(RingElem);
+</PRE><P>
+  <CODE>RingElem</CODE> must export the following:
+  - a type T;
+  - procedures
+    + <CODE>Nonzero(a: T): BOOLEAN</CODE>, which indicates whether <CODE>a</CODE> is nonzero;
+    + <CODE>Minus(a, b: T): T</CODE> and <CODE>Times(a, b: T): T</CODE>,
+      which return the results you'd guess from the procedures' names; and
+    + <CODE>Print(a: T)</CODE>, which does what the name implies.
+
+
+<P><PRE>TYPE
+
+  <A HREF="Matrix.mg.html#T">T</A> &lt;: Public;
+
+  Public = OBJECT
+  METHODS
+    init(READONLY data: ARRAY OF ARRAY OF RingElem.T): T;
+    initDimensions(m, n: CARDINAL): T;
+    num_rows(): CARDINAL;
+    num_cols(): CARDINAL;
+    entries(): REF ARRAY OF ARRAY OF RingElem.T;
+    triangularize();
+  END;
+</PRE><P>
+Use <CODE>init</CODE> to copy the entries in <CODE>data</CODE>; returns <CODE>self</CODE>.
+<P>
+Use <CODE>initDimensions</CODE> for an mxn matrix of random entries.
+<P>
+<CODE>num_rows</CODE> returns the number of rows in <CODE>self</CODE>.
+<P>
+<CODE>num_cols</CODE> returns the number of columns in <CODE>self</CODE>.
+<P>
+<CODE>entries</CODE> returns the entries in <CODE>self</CODE>.
+<P>
+<CODE>triangularize</CODE> performs Gaussian elimination in the context of a ring.
+      We can add scalar multiples of rows,
+      and we can swap rows, but we may lack multiplicative inverses,
+      so we cannot necessarily obtain 1 as a row's first entry.
+<P>
+
+
+<P>
+<P>  <PRE>PROCEDURE <A HREF="Matrix.mg.html#PrintMatrix">PrintMatrix</A>(m: T);
+  (* prints the matrix row-by-row; sorry, no special padding to line up columns *)
+
+END Matrix.</PRE>
+</inInterface>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

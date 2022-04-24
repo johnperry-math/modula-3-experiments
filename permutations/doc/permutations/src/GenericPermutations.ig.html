@@ -1,0 +1,63 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: permutations/src/GenericPermutations.ig</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>permutations/src/GenericPermutations.ig</H2></A><HR>
+<inInterface>
+<PRE>GENERIC INTERFACE <genericInterface><A HREF="GenericPermutations.mg.html">GenericPermutations</A></genericInterface>(DomainSeq, DomainSet, DomainSeqSeq);
+</PRE><P>
+  <CODE>Domain</CODE> is where the things to permute come from (unused in interface).
+  <CODE>DomainSeq</CODE> is a <CODE>Sequence</CODE> of <CODE>Domain</CODE>.
+  <CODE>DomainSet</CODE> is a <CODE>Set</CODE> of <CODE>Domain</CODE>.
+  <CODE>DomainSeqSeq</CODE> is a <CODE>Sequence</CODE> of <CODE>DomainSeq</CODE>.
+
+
+<P><PRE>PROCEDURE <A HREF="GenericPermutations.mg.html#GeneratePermutations">GeneratePermutations</A>(
+  READONLY chosen: DomainSeq.T;
+  READONLY remaining: DomainSet.T;
+  READONLY result: DomainSeqSeq.T
+);
+</PRE><BLOCKQUOTE><EM><P>
+  Recursively generates all the permutations of elements
+  in the union of <CODE>chosen</CODE> and <CODE>remaining</CODE>.
+  Values in <CODE>chosen</CODE> have already been chosen;
+  values in <CODE>remaining</CODE> can still be chosen.
+  If <CODE>remaining</CODE> is empty, it adds the permutation to <CODE>result</CODE>.
+  Otherwise, it picks each element in <CODE>remaining</CODE>, removes it,
+  adds it to <CODE>chosen</CODE>, recursively calls itself,
+  then removes the last element of <CODE>chosen</CODE> and adds it back to <CODE>remaining</CODE>.
+  Although the parameters are modified, we can describe them as <CODE>READONLY</CODE>
+  because we do not re-assign them.
+</EM></BLOCKQUOTE><PRE>
+
+END GenericPermutations.</PRE>
+</inInterface>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

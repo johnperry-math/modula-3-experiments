@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+<TITLE>Critical Mass Modula-3: gaussian/src/ModularRing.i3</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<A NAME="0TOP0">
+<H2>gaussian/src/ModularRing.i3</H2></A><HR>
+<inInterface>
+<PRE>INTERFACE <interface><A HREF="ModularRing.m3.html">ModularRing</A></interface>;
+</PRE><P>
+Implements arithmetic modulo a nonzero integer.
+Assertions check that the modulus is nonzero.
+
+
+<P><PRE>TYPE
+
+  T = RECORD
+    value, modulus: CARDINAL;
+  END;
+
+PROCEDURE <A HREF="ModularRing.m3.html#Init">Init</A>(VAR a: T; value: INTEGER; modulus: CARDINAL);
+</PRE><BLOCKQUOTE><EM> initializes a to the given value and modulus </EM></BLOCKQUOTE><PRE>
+
+PROCEDURE <A HREF="ModularRing.m3.html#Nonzero">Nonzero</A>(n: T): BOOLEAN;
+
+PROCEDURE <A HREF="ModularRing.m3.html#Plus">Plus</A>(a, b: T): T;
+
+PROCEDURE <A HREF="ModularRing.m3.html#Minus">Minus</A>(a, b: T): T;
+
+PROCEDURE <A HREF="ModularRing.m3.html#Times">Times</A>(a, b: T): T;
+
+PROCEDURE <A HREF="ModularRing.m3.html#Print">Print</A>(a: T; withModulus := FALSE);
+</PRE><BLOCKQUOTE><EM><P>
+   when <CODE>withModulus</CODE> is <CODE>TRUE</CODE>,
+   this adds after <CODE>a</CODE> the letter <CODE>m</CODE>,
+   followed by the modulus
+</EM></BLOCKQUOTE><PRE>
+
+END ModularRing.</PRE>
+</inInterface>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

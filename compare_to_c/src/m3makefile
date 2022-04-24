@@ -1,0 +1,4 @@
+import("libm3")
+implementation("RandomMatrix")
+build_standalone()
+program("RandomMatrix")
